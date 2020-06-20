@@ -138,12 +138,14 @@ void loop() {
 
 void raiseBackground() {
   Serial.println("Raising the background");
-  while (left_currentHeight != 0 && right_currentHeight != 0) {
-    if (left_currentHeight > 0) {
-      leftServo.write(RAISE_LEFT);
+  leftServo.write(RAISE_LEFT);
+  rightServo.write(RAISE_RIGHT);
+  while (left_currentHeight > 0 && right_currentHeight > 0) {
+    if (left_currentHeight <= 0) {
+      leftServo.write(STOP);
     }
-    if (right_currentHeight > 0) {
-      rightServo.write(RAISE_RIGHT);
+    if (right_currentHeight <= 0) {
+      rightServo.write(STOP);
     }
     updateHeight();
   }
@@ -158,12 +160,14 @@ void raiseBackground() {
 void lowerBackground() {
   Serial.println("Lowering the background");
   // Keep lowering the background until the current height is the max height
-  while (left_currentHeight != MAX_HEIGHT && right_currentHeight != MAX_HEIGHT) {
-    if (left_currentHeight < MAX_HEIGHT) {
-      leftServo.write(LOWER_LEFT);
+  leftServo.write(LOWER_LEFT);
+  rightServo.write(LOWER_RIGHT);
+  while (left_currentHeight < MAX_HEIGHT && right_currentHeight < MAX_HEIGHT) {
+    if (left_currentHeight >= MAX_HEIGHT) {
+      leftServo.write(STOP);
     }
-    if (right_currentHeight < MAX_HEIGHT) {
-      rightServo.write(LOWER_RIGHT);
+    if (right_currentHeight >= MAX_HEIGHT) {
+      rightServo.write(STOP);
     }
     updateHeight();
   }
